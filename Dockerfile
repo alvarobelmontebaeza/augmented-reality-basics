@@ -1,7 +1,7 @@
 # parameters
-ARG REPO_NAME="<REPO_NAME_HERE>"
-ARG DESCRIPTION="<DESCRIPTION_HERE>"
-ARG MAINTAINER="<YOUR_FULL_NAME> (<YOUR_EMAIL_ADDRESS>)"
+ARG REPO_NAME="augmented-reality-basics"
+ARG DESCRIPTION=" Duckietown compliant ROS package that performs augmented reality tasks drawing segments in an image given a map file. "
+ARG MAINTAINER="Alvaro Belmonte Baeza (alvaro.bb.7@gmail.com)"
 # pick an icon from: https://fontawesome.com/v4.7.0/icons/
 ARG ICON="cube"
 

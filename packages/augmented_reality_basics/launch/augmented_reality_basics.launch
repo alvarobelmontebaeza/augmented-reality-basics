@@ -1,0 +1,8 @@
+<launch>
+
+  <group ns="$(arg veh)">  
+	"$(arg map_file)"
+    <node pkg="my_package" type="my_publisher_node.py" name="my_publisher_node_1" output="screen"/>
+  </group>
+
+</launch>
