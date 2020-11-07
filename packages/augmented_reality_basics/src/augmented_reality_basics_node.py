@@ -66,12 +66,13 @@ class AugmentedRealityBasicsNode(DTROS):
 
         # Convert to cv2 image using cvBridge
         image = self.bridge.compressed_imgmsg_to_cv2(ros_image)
-
+        # Undistort image
         image = self.augmenter.process_image(image)
-        
+        # Draw the map 
         augmented_image = self.augmenter.render_segments(self._map['points'], self._map['segments'], image)
-
-        return augmented_image
+        augmented_image_msg = self.bridge.cv2_to_compressed_imgmsg(augmented_image)
+        # Publish the augmented image
+        self.augmented_pub.publish(augmented_image_msg)
 
 if __name__ == '__main__':
     # create the node
