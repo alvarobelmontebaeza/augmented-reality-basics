@@ -3,6 +3,8 @@ project(augmented_reality_basics)
 
 find_package(catkin REQUIRED COMPONENTS
   rospy
+  geometry_msgs
+  sensor_msgs
 )
 
 catkin_package()
