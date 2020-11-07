@@ -5,6 +5,7 @@ import rospy
 import numpy as np
 import cv2
 from image_geometry import PinholeCameraModel
+from geometry_msgs.msg import Point
 
 class Augmenter():
     '''
@@ -21,6 +22,8 @@ class Augmenter():
         self.cam_model = PinholeCameraModel()
         self.cam_model.fromCameraInfo(self.cam_info)
 
+        # Compute inverse of Projection Matrix
+        self.homography_inv = np.linalg.inv(np.array(self.cam_model.projectionMatrix()).reshape((3,3)))
         # Initiate rectify maps
         self._init_rectify_maps()
     
@@ -37,7 +40,7 @@ class Augmenter():
     def process_image(self, raw_image, interpolation=cv2.INTER_NEAREST):
         '''
         Undistort a provided image using the calibrated camera info
-
+        Implementation based on: https://github.com/duckietown/dt-core/blob/952ebf205623a2a8317fcb9b922717bd4ea43c98/packages/image_processing/include/image_processing/rectification.py
         Args:
             raw_image: A CV image to be rectified
             interpolation: Type of interpolation. For more accuracy, use another cv2 provided constant
@@ -49,8 +52,33 @@ class Augmenter():
 
         return processed_image
     
-    def ground2pixel(self, ground_points):
-        return image_points
+    def ground2pixel(self, ground_point_raw):
+        '''
+        Projects a point in the ground plane to a point in the image plane
+
+        Args:
+            ground_point: numpy.array describing a 3D Point in ground coordinates to be transformed
+        
+        Returns: 
+            tuple of pixel coordinates of the point in the image in normalized values (from 0 to 1)
+        '''
+        ground_point = Point()
+        ground_point.x = ground_point_raw[0]
+        ground_point.y = ground_point_raw[1]
+        ground_point.z = ground_point_raw[2]
+
+        if ground_point.z != 0:
+            msg = 'This method assumes that the point is a ground point (z=0). '
+            msg += 'However, the point is (%s,%s,%s)' % (ground_point.x, ground_point.y, ground_point.z)
+            raise ValueError(msg)
+
+        # Normalize ground point
+        ground_point_norm = np.array([ground_point.x, ground_point.y, 1.0])
+        # Transform the point to pixel coords
+        image_point = np.dot(self.homography_inv, ground_point_norm)
+        image_point = image_point / image_point[2]
+
+        return (image_point[0], image_point[1])
     
     def render_segments(self, segments, image):
         return rendered_image
