@@ -55,7 +55,7 @@ class Augmenter():
     def ground2pixel(self, ground_point_raw):
         '''
         Projects a point in the ground plane to a point in the image plane
-
+        Implementation based on https://github.com/duckietown/dt-core/blob/952ebf205623a2a8317fcb9b922717bd4ea43c98/packages/image_processing/include/image_processing/ground_projection_geometry.py#L38
         Args:
             ground_point: numpy.array describing a 3D Point in ground coordinates to be transformed
         
@@ -80,9 +80,7 @@ class Augmenter():
 
         return (image_point[0], image_point[1])
     
-    def render_segments(self, segments, image):
-        return rendered_image
-    
+
     def draw_segment(self, image, pt_x, pt_y, color):
         defined_colors = {
             'red': ['rgb', [1, 0, 0]],
@@ -96,3 +94,15 @@ class Augmenter():
         _color_type, [r, g, b] = defined_colors[color]
         cv2.line(image, (pt_x[0], pt_y[0]), (pt_x[1], pt_y[1]), (b * 255, g * 255, r * 255), 5)
         return image
+    
+    def render_segments(self, points, segments, image):        
+        # Draw each described segment in the provided image
+        for segment in segments:
+            point1 = points[[segment['points'][0]]][1]
+            point2 = points[[segment['points'][1]]][1]
+            color = segment['color']
+
+            rendered_image = self.draw_segment(image,point1,point2,color)
+
+
+        return rendered_image
