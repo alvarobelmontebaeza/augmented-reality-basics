@@ -78,7 +78,7 @@ class Augmenter():
         image_point = np.dot(self.homography_inv, ground_point_norm)
         image_point = image_point / image_point[2]
 
-        return (image_point[0], image_point[1])
+        return image_point
     
 
     def draw_segment(self, image, pt_x, pt_y, color):
