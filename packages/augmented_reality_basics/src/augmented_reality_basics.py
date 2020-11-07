@@ -95,11 +95,27 @@ class Augmenter():
         cv2.line(image, (pt_x[0], pt_y[0]), (pt_x[1], pt_y[1]), (b * 255, g * 255, r * 255), 5)
         return image
     
-    def render_segments(self, points, segments, image):        
+    def render_segments(self, in_points, in_segments, image):
+        # Extract the points and correct if necessary
+        point_names = in_points.keys()
+        corrected_points = dict.fromkeys(in_points.keys())
+        i=0
+        for in_point in in_points:
+            in_point = np.array(in_point[1])
+            if in_point[0] == 'axle':
+                point = self.ground2pixel(in_point)
+            elif in_point[0] == 'image01':
+                point = in_point
+            # Convert to absolute image coordinates
+            pixel = [point[0] * self.cam_model.width, point[1] * self.cam_model.height]
+            corrected_points[point_names[i]] = pixel
+            i = i+1
+
+
         # Draw each described segment in the provided image
-        for segment in segments:
-            point1 = points[[segment['points'][0]]][1]
-            point2 = points[[segment['points'][1]]][1]
+        for segment in in_segments:
+            point1 = corrected_points[segment['points'][0]]
+            point2 = corrected_points[segment['points'][1]]
             color = segment['color']
 
             rendered_image = self.draw_segment(image,point1,point2,color)
