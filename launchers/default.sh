@@ -14,7 +14,8 @@ dt-launchfile-init
 
 # launching app
 # Select map_file to be "hud", "calibration_pattern" or "lane"
-dt-exec roslaunch augmented_reality_basics augmented_reality_basics.launch map_file:="$MAP_FILE" veh:="$VEHICLE_NAME"
+# You can also use the environment variable MAP_FILE to choose map when running the container
+dt-exec roslaunch augmented_reality_basics augmented_reality_basics.launch map_file:="calibration_pattern" veh:="$VEHICLE_NAME"
 
 
 # ----------------------------------------------------------------------------
