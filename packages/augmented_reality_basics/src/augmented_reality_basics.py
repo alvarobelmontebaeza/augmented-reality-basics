@@ -76,9 +76,9 @@ class Augmenter():
         ground_point_norm = np.array([ground_point.x, ground_point.y, 1.0])
         # Transform the point to pixel coords
         image_point = np.dot(self.homography_inv, ground_point_norm)
-        image_point = image_point / image_point[2]
+        image_point = np.array([image_point[1],image_point[0]]) / image_point[2]
 
-        return image_point
+        return image_point.astype(int)
     
 
     def draw_segment(self, image, pt_x, pt_y, color):
@@ -105,15 +105,16 @@ class Augmenter():
             point_coord = np.array(in_points[in_point][1])
             # Transform coordinates if they are in ground frame
             if point_frame == 'axle':
-                point_coord = self.ground2pixel(point_coord)
-            elif point_frame != 'image01':
+                pixel = self.ground2pixel(point_coord)
+            elif point_frame == 'image01':
+                # Convert to absolute image coordinates
+                # The image pixels are a matrix of WxH -> 0 to W/H - 1 
+                pixel = [point_coord[0] * (image.shape[0]-1), point_coord[1] * (image.shape[1]-1)]
+            else:
                 msg = 'This class currently supports only axle and image01 frames.'
                 msg += 'However, the point has frame %s' % point_frame
                 raise ValueError(msg)
 
-            # Convert to absolute image coordinates
-            # The image pixels are a matrix of WxH -> 0 to W/H - 1 
-            pixel = [point_coord[0] * (image.shape[0]-1), point_coord[1] * (image.shape[1]-1)]
             corrected_points[in_point] = pixel
 
         # Draw each described segment in the provided image
