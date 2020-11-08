@@ -60,7 +60,7 @@ class Augmenter():
             ground_point: numpy.array describing a 3D Point in ground coordinates to be transformed
         
         Returns: 
-            tuple of pixel coordinates of the point in the image in normalized values (from 0 to 1)
+            np.array of pixel coordinates of the point in the image in normalized values (from 0 to 1)
         '''
         ground_point = Point()
         ground_point.x = ground_point_raw[0]
