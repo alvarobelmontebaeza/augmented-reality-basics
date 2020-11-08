@@ -5,6 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   geometry_msgs
   sensor_msgs
+  cv_bridge
 )
 
 catkin_package()
