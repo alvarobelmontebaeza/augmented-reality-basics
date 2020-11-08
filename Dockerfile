@@ -57,6 +57,7 @@ RUN pip3 install --use-feature=2020-resolver -r ${REPO_PATH}/dependencies-py3.tx
 # copy the source code
 COPY ./packages "${REPO_PATH}/packages"
 
+
 # build packages
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
   catkin build \
@@ -82,5 +83,3 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
     org.duckietown.label.maintainer="${MAINTAINER}"
 # <== Do not change the code above this line
 # <==================================================
-# Copy the maps
-COPY ./maps "${REPO_PATH}/maps"
