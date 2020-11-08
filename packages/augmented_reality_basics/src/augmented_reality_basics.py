@@ -97,19 +97,18 @@ class Augmenter():
     
     def render_segments(self, in_points, in_segments, image):
         # Extract the points and correct if necessary
-        point_names = in_points.keys()
         corrected_points = dict.fromkeys(in_points.keys())
-        i=0
+
         for in_point in in_points:
-            in_point = np.array(in_point[1])
-            if in_point[0] == 'axle':
-                point = self.ground2pixel(in_point)
-            elif in_point[0] == 'image01':
-                point = in_point
+            point_frame = in_points[in_point][0]
+            point_coord = np.array(in_points[in_point][1])
+            if point_frame == 'axle':
+                point_coord = self.ground2pixel(point_coord)
+            elif point_frame == 'image01':
+                pass
             # Convert to absolute image coordinates
-            pixel = [point[0] * self.cam_model.width, point[1] * self.cam_model.height]
-            corrected_points[point_names[i]] = pixel
-            i = i+1
+            pixel = [point_coord[0] * self.cam_model.width, point_coord[1] * self.cam_model.height]
+            corrected_points[in_point] = pixel
 
 
         # Draw each described segment in the provided image
