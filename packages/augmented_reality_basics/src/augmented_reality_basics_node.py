@@ -22,7 +22,7 @@ class AugmentedRealityBasicsNode(DTROS):
         self._map_file = sys.argv[1]
         # Read map and calibration data YAML files
         self._map =  self.readYamlFile('/maps/' + self._map_file + '.yaml')
-        self._calib_data = self.readYamlFile('/data/config/calibrations/intrinsics/' + self._vehicle_name + '.yaml')
+        self._calib_data = self.readYamlFile('/data/config/calibrations/camera_intrinsic/' + self._vehicle_name + '.yaml')
         # Set CameraInfo Object
         self._cam_info = self.setCamInfo(self._calib_data)
 
@@ -32,7 +32,7 @@ class AugmentedRealityBasicsNode(DTROS):
         self.augmenter = Augmenter(camera_info=self._cam_info)
 
         # Create subscriber to the image topic
-        self.image_sub = rospy.Subscriber('/' + self.vehicle_name + '/camera_node/image/compressed', CompressedImage, self.callback)
+        self.image_sub = rospy.Subscriber('/' + self._vehicle_name + '/camera_node/image/compressed', CompressedImage, self.callback)
 
         # Create publisher for augmented image
         self.augmented_pub = rospy.Publisher('~' + self._map_file + '/image/compressed' , CompressedImage, queue_size=1)
