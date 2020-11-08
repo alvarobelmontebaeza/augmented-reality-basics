@@ -20,7 +20,7 @@ class AugmentedRealityBasicsNode(DTROS):
         # Get parameters from roslaunch
         self._vehicle_name = sys.argv[2]
         self._map_file = sys.argv[1]
-        self.log('Retrieved roslaunch args. veh:=%s, map_file:=%s' % self._vehicle_name, self._map_file)
+        self.log('Retrieved roslaunch args. veh:=%s, map_file:=%s' % (self._vehicle_name, self._map_file))
         rospack = rospkg.RosPack() # To retrieve current package path
         # Read map and calibration data YAML files
         self._calib_data = self.readYamlFile('/data/config/calibrations/camera_intrinsic/' + self._vehicle_name + '.yaml')
