@@ -82,6 +82,9 @@ class AugmentedRealityBasicsNode(DTROS):
         augmented_image_msg = self.bridge.cv2_to_compressed_imgmsg(augmented_image)
         # Publish the augmented image
         self.augmented_pub.publish(augmented_image_msg)
+    
+    def onShutdown(self):
+        super(AugmentedRealityBasicsNode, self).onShutdown()
 
 if __name__ == '__main__':
     # create the node
