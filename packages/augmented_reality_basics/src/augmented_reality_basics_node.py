@@ -23,6 +23,7 @@ class AugmentedRealityBasicsNode(DTROS):
         rospack = rospkg.RosPack() # To retrieve current package path
         # Read map and calibration data YAML files
         self._calib_data = self.readYamlFile('/data/config/calibrations/camera_intrinsic/' + self._vehicle_name + '.yaml')
+        self._extrinsics = self.readYamlFile('/data/config/calibrations/camera_extrinsic/' + self._vehicle_name + '.yaml') 
         self._map =  self.readYamlFile(rospack.get_path('augmented_reality_basics') +'/src/maps/' + self._map_file + '.yaml')
         # Set CameraInfo Object
         self._cam_info = self.setCamInfo(self._calib_data)
