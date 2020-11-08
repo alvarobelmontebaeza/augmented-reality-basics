@@ -16,7 +16,7 @@ class Augmenter():
         - Publishes the rendered observations in the simulator to the camera image topic
     '''
 
-    def __init__(self, camera_info):
+    def __init__(self, camera_info, extrinsics):
         # Create camera model from camera calibration info
         self.cam_info = camera_info
         self.cam_model = PinholeCameraModel()
