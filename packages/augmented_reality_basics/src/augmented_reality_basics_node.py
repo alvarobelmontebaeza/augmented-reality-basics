@@ -21,8 +21,8 @@ class AugmentedRealityBasicsNode(DTROS):
         self._vehicle_name = sys.argv[2]
         self._map_file = sys.argv[1]
         # Read map and calibration data YAML files
-        self._map =  self.readYamlFile('/maps/' + self._map_file + '.yaml')
         self._calib_data = self.readYamlFile('/data/config/calibrations/camera_intrinsic/' + self._vehicle_name + '.yaml')
+        self._map =  self.readYamlFile('./maps/' + self._map_file + '.yaml')
         # Set CameraInfo Object
         self._cam_info = self.setCamInfo(self._calib_data)
 
