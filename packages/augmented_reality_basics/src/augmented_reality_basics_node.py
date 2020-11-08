@@ -20,25 +20,30 @@ class AugmentedRealityBasicsNode(DTROS):
         # Get parameters from roslaunch
         self._vehicle_name = sys.argv[2]
         self._map_file = sys.argv[1]
+        self.log('Retrieved roslaunch args. veh:=%s, map_file:=%s' % self._vehicle_name, self._map_file)
         rospack = rospkg.RosPack() # To retrieve current package path
         # Read map and calibration data YAML files
         self._calib_data = self.readYamlFile('/data/config/calibrations/camera_intrinsic/' + self._vehicle_name + '.yaml')
-        self._extrinsics = self.readYamlFile('/data/config/calibrations/camera_extrinsic/' + self._vehicle_name + '.yaml') 
+        self.log('Loaded intrinsics calibration file')
+        self._extrinsics = self.readYamlFile('/data/config/calibrations/camera_extrinsic/' + self._vehicle_name + '.yaml')
+        self.log('Loaded extrinsics calibration file') 
         self._map =  self.readYamlFile(rospack.get_path('augmented_reality_basics') +'/src/maps/' + self._map_file + '.yaml')
+        self.log('Loaded map')
         # Set CameraInfo Object
         self._cam_info = self.setCamInfo(self._calib_data)
 
         # Create CV Bridge
         self.bridge = CvBridge()
         # Create augmenter object
-        self.augmenter = Augmenter(camera_info=self._cam_info)
+        self.augmenter = Augmenter(camera_info=self._cam_info, extrinsics=self._extrinsics)
 
         # Create subscriber to the image topic
         self.image_sub = rospy.Subscriber('/' + self._vehicle_name + '/camera_node/image/compressed', CompressedImage, self.callback)
 
         # Create publisher for augmented image
         self.augmented_pub = rospy.Publisher('~' + self._map_file + '/image/compressed' , CompressedImage, queue_size=1)
-    
+        self.log(node_name + 'INITIALIZED')
+
     def readYamlFile(self,fname):
         """
         Reads the YAML file in the path specified by 'fname'.
