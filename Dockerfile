@@ -82,3 +82,5 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
     org.duckietown.label.maintainer="${MAINTAINER}"
 # <== Do not change the code above this line
 # <==================================================
+# Copy the maps
+COPY ./maps "${REPO_PATH}/maps"
