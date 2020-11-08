@@ -23,7 +23,7 @@ class Augmenter():
         self.cam_model.fromCameraInfo(self.cam_info)
 
         # Compute inverse of Projection Matrix
-        self.homography_inv = np.linalg.inv(np.array(self.cam_model.projectionMatrix()).reshape((3,3)))
+        self.homography_inv = np.linalg.inv(np.array(extrinsics['homography']).reshape((3,3)))
         # Initiate rectify maps
         self._init_rectify_maps()
     
