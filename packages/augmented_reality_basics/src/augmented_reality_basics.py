@@ -100,24 +100,33 @@ class Augmenter():
         corrected_points = dict.fromkeys(in_points.keys())
 
         for in_point in in_points:
+            # Separate frame and coordinates
             point_frame = in_points[in_point][0]
             point_coord = np.array(in_points[in_point][1])
+            # Transform coordinates if they are in ground frame
             if point_frame == 'axle':
                 point_coord = self.ground2pixel(point_coord)
-            elif point_frame == 'image01':
-                pass
-            # Convert to absolute image coordinates
-            pixel = [point_coord[0] * self.cam_model.width, point_coord[1] * self.cam_model.height]
-            corrected_points[in_point] = pixel
+            elif point_frame != 'image01':
+                msg = 'This class currently supports only axle and image01 frames.'
+                msg += 'However, the point has frame %s' % point_frame
+                raise ValueError(msg)
 
+            # Convert to absolute image coordinates
+            # The image pixels are a matrix of WxH -> 0 to W/H - 1 
+            pixel = [point_coord[0] * (image.shape[0]-1), point_coord[1] * (image.shape[1]-1)]
+            corrected_points[in_point] = pixel
 
         # Draw each described segment in the provided image
         for segment in in_segments:
+            # Extract segment points
             point1 = corrected_points[segment['points'][0]]
             point2 = corrected_points[segment['points'][1]]
+            # Separate X and Y components, and color
+            pt_y = (point1[0],point2[0])
+            pt_x = (point1[1],point2[1])
             color = segment['color']
-
-            rendered_image = self.draw_segment(image,point1,point2,color)
+            # Draw the segments in the provided image
+            rendered_image = self.draw_segment(image,pt_x,pt_y,color)
 
 
         return rendered_image
