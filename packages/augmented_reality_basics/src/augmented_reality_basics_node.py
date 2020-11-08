@@ -6,7 +6,7 @@ import rospy
 import numpy as np
 import cv2
 from cv_bridge import CvBridge
-
+import rospkg
 import yaml
 from duckietown.dtros import DTROS, NodeType
 from sensor_msgs.msg import CompressedImage, CameraInfo
@@ -20,9 +20,10 @@ class AugmentedRealityBasicsNode(DTROS):
         # Get parameters from roslaunch
         self._vehicle_name = sys.argv[2]
         self._map_file = sys.argv[1]
+        rospack = rospkg.RosPack() # To retrieve current package path
         # Read map and calibration data YAML files
         self._calib_data = self.readYamlFile('/data/config/calibrations/camera_intrinsic/' + self._vehicle_name + '.yaml')
-        self._map =  self.readYamlFile('./maps/' + self._map_file + '.yaml')
+        self._map =  self.readYamlFile(rospack.get_path('augmented_reality_basics') +'/src/maps/' + self._map_file + '.yaml')
         # Set CameraInfo Object
         self._cam_info = self.setCamInfo(self._calib_data)
 
