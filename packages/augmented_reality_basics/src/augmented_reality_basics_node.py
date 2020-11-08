@@ -42,7 +42,7 @@ class AugmentedRealityBasicsNode(DTROS):
 
         # Create publisher for augmented image
         self.augmented_pub = rospy.Publisher('~' + self._map_file + '/image/compressed' , CompressedImage, queue_size=1)
-        self.log(node_name + 'INITIALIZED')
+        self.log(node_name + ' INITIALIZED AND RUNNING')
 
     def readYamlFile(self,fname):
         """
