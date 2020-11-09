@@ -1,47 +1,36 @@
-# Template: template-ros
+# AUGMENTED-REALITY-BASICS
 
-This template provides a boilerplate repository
-for developing ROS-based software in Duckietown.
+This package provides a basic AR functionality to be used with the duckietown platform
 
-**NOTE:** If you want to develop software that does not use
-ROS, check out [this template](https://github.com/duckietown/template-basic).
+## Instructions
 
+### 1) Clone the repository
 
-## How to use it
+git clone https://github.com/alvarobelmontebaeza/augmented-reality-basics
 
-### 1. Fork this repository
+### 2) Move into the root diretory of the repository
 
-Use the fork button in the top-right corner of the github page to fork this template repository.
+### 3) Select which map file to load
 
+cd packages/augmented_reality_basics/launch/
 
-### 2. Create a new repository
+Open the launchfile in your favourite text editor, and change the map_file argument to load the desired map
 
-Create a new repository on github.com while
-specifying the newly forked template repository as
-a template for your new repository.
+### 4) Build the package in your Duckiebot
 
+dts devel build -f -H <HOSTNAME>.local
 
-### 3. Define dependencies
+### 5) Run the node
 
-List the dependencies in the files `dependencies-apt.txt` and
-`dependencies-py3.txt` (apt packages and pip packages respectively).
+dts devel run -H <HOSTNAME>.local
 
+### 6) In another terminal, open rqt_image_view and select the correct topic to visualize the AR image
 
-### 4. Place your code
+dts start_gui_tools <HOSTNAME>
 
-Place your code in the directory `/packages/` of
-your new repository.
+rqt_image_view
 
+### 7) Enjoy!
 
-### 5. Setup launchers
-
-The directory `/launchers` can contain as many launchers (launching scripts)
-as you want. A default launcher called `default.sh` must always be present.
-
-If you create an executable script (i.e., a file with a valid shebang statement)
-a launcher will be created for it. For example, the script file 
-`/launchers/my-launcher.sh` will be available inside the Docker image as the binary
-`dt-launcher-my-launcher`.
-
-When launching a new container, you can simply provide `dt-launcher-my-launcher` as
-command.
+NOTE: For the calibration_pattern and lane maps, you will need to locate the duckiebot accurately to see
+good results!
