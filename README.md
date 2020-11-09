@@ -18,15 +18,15 @@ Open the launchfile in your favourite text editor, and change the map_file argum
 
 ### 4) Build the package in your Duckiebot
 
-dts devel build -f -H <HOSTNAME>.local
+dts devel build -f -H  HOSTNAME.local
 
 ### 5) Run the node
 
-dts devel run -H <HOSTNAME>.local
+dts devel run -H HOSTNAME.local
 
 ### 6) In another terminal, open rqt_image_view and select the correct topic to visualize the AR image
 
-dts start_gui_tools <HOSTNAME>
+dts start_gui_tools HOSTNAME
 
 rqt_image_view
 
